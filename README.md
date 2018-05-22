@@ -1,4 +1,4 @@
-# PM-Client
+# PMAdmin
 Client Application for Policy Machine Web services
 
 Steps to run:
