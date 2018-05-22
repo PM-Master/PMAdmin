@@ -1,0 +1,14 @@
+.icon-button {
+  padding: 0 5px;
+}
+
+.modal-full {
+  min-width: 90vw;
+  margin: 5vh 5vw;
+}
+
+.modal-full .modal-content {
+  min-height: 90vh;
+}
+
+

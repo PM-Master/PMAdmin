@@ -1,0 +1,19 @@
+<div class="" style="margin: 0 35%; padding: 20px; height: 100%">
+  <form class="form-signin" (ngSubmit)="login(f)" #f="ngForm" style="margin-bottom: 10px">
+    <h2 class="form-signin-heading">Login</h2>
+
+    <label for="username" class="sr-only">Username</label>
+    <input class="form-control" type="text" id="username" name="username" ngModel  placeholder="Username">
+
+    <label for="password" class="sr-only">Password</label>
+    <input
+      class="form-control"
+      type="password"
+      id="password"
+      name="password"
+      ngModel
+      placeholder="Password">
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+  </form>
+</div>

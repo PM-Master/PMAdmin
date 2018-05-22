@@ -1,0 +1,169 @@
+<app-nav-bar [assocsActive]="true"></app-nav-bar>
+<div class="row" style="height: 90%;margin: 0">
+  <div class="col-lg-12" style="height: 100%; padding: 40px 5%;">
+    <h3>
+      Associations
+      <div style="float: right">
+        <button class="btn btn-danger icon-button" data-toggle="modal" data-target="#deleteModal" [disabled]="!selectedAssociation"><a class="fa fa-trash"></a></button>
+        <div class="modal" id="deleteModal" role="dialog">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header" style="background: #222222">
+                <h4 class="modal-title" style="color: white;">Delete Node</h4>
+              </div>
+              <div class="modal-body">
+                <h4 *ngIf="selectedAssociation">Are you sure you want to delete the association between <strong>{{selectedAssociation.child.name}}</strong> and <strong>{{selectedAssociation.parent.name}}</strong>?</h4>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit"
+                        class="btn btn-danger"
+                        data-toggle="modal"
+                        data-target="#deleteModal"
+                        (click)="deleteAssociation()">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-success icon-button" data-toggle="modal" data-target="#editModal" [disabled]="!selectedAssociation"><a class="fa fa-pencil"></a></button>
+        <div *ngIf="selectedAssociation" class="modal" id="editModal" role="dialog">
+          <div class="modal-dialog modal-md">
+            <div class="modal-content">
+              <div class="modal-header" style="background: #222222">
+                <h4 class="modal-title" style="color: white;">Update Association</h4>
+              </div>
+              <div class="modal-body" style="text-align: left;">
+                    <div class="form-group">
+                      <label for="name" class="control-label">UA ID</label>
+                      <input type="text" class="form-control" name="name" id="name" [(ngModel)]="selectedAssociation.child.name" disabled>
+                    </div>
+                    <div class="form-group">
+                      <label for="id" class="control-label">Target ID</label>
+                      <input type="text" class="form-control" name="id" id="id" [(ngModel)]="selectedAssociation.parent.name" disabled>
+                    </div>
+                    <div class="form-group">
+                      <label class="control-label">Operations</label>
+                      <textarea class="form-control" style="overflow: auto; white-space: pre" name="newOps" id="newOps" [(ngModel)]="selectedAssociationOps">{{selectedAssociationOps}}</textarea>
+                    </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#editModal" (click)="updateAssociation()">Update</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary icon-button" data-toggle="modal" data-target="#createModal"><a class="fa fa-plus"></a></button>
+        <div class="modal" id="createModal" role="dialog">
+          <div class="modal-dialog modal-full">
+            <div class="modal-content">
+              <div class="modal-header" style="background: #222222">
+                <h5 class="modal-title" style="color: white;">Create Association</h5>
+              </div>
+              <div class="modal-body" style="text-align: left; padding: 5px 15px">
+                <div class="row">
+                  <div class="col-lg-5">
+                    <div class="form-group">
+                      <h6>User Attribute</h6>
+                      <div style="height: 500px; overflow: auto">
+                        <table id='a-uaTable' class="table table-hover table-sm">
+                          <thead>
+                          <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Properties</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+
+                          <tr *ngFor="let node of uas" style="cursor: pointer;" (click)="setAssocUA(node)" [class.table-active]="node === assocUA">
+                            <td>{{ node.id }}</td>
+                            <td>{{ node.name }}</td>
+                            <td>{{ node.type }}</td>
+                            <td>
+                              <div *ngFor="let prop of node.properties">
+                                <strong>{{ prop.key }}</strong>={{ prop.value }}
+                              </div>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-5">
+                    <div class="form-group">
+                      <h6>Object Attribute</h6>
+                      <div style="height: 500px; overflow: auto">
+                        <table id='a-oaParentTable' class="table table-hover table-sm">
+                          <thead>
+                          <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Properties</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+
+                          <tr *ngFor="let node of oas" style="cursor: pointer"  (click)="setAssocOA(node)" [class.table-active]="node == assocOA">
+                            <td>{{ node.id }}</td>
+                            <td>{{ node.name }}</td>
+                            <td>{{ node.type }}</td>
+                            <td>
+                              <div *ngFor="let prop of node.properties">
+                                <strong>{{ prop.key }}</strong>={{ prop.value }}
+                              </div>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-2">
+                    <div class="form-group">
+                      <h6>Operations (<small style="font-style: italic">One op per line</small>)</h6>
+                      <textarea class="form-control" id="ops" name="ops" style="font-size: small; overflow: auto; white-space: pre; height: 25vh;" [(ngModel)]="assocModel.ops" #ops="ngModel"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#createModal" (click)="createAssociation()">Create Association</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </h3>
+
+    <div style="padding: 10px; overflow-y: auto; height: 100%">
+      <table class="table table-sm table-hover table-condensed" style="margin-bottom: 0">
+        <thead>
+        <tr>
+          <th>UA Name</th>
+          <th>Target Name</th>
+          <th>Operations</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr *ngFor="let assoc of assocs" style="cursor: pointer;" (click)="setAssociation(assoc)" [class.table-active]="assoc == selectedAssociation">
+          <td>{{ assoc.child.name }}</td>
+          <td>{{ assoc.parent.name }}</td>
+          <td>
+            <div *ngFor="let op of assoc.ops">
+              {{ op }}
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

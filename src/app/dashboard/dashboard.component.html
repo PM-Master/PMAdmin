@@ -1,0 +1,374 @@
+<app-nav-bar [dashboardActive]="true"></app-nav-bar>
+<div class="" style="position: fixed; top: 60px; bottom:120px; width: 49%; overflow: auto; padding: 0; margin: 0 5px 0 10px">
+  <h4>Child Node: <span *ngIf="childNode" class="text-success">{{childNode.name}}</span></h4>
+  <ol class="breadcrumb" style="border-radius: 0; margin-bottom: 0">
+    <li *ngFor="let p of childPath" class="breadcrumb-item" style="cursor: pointer;" (click)="setChildPathNode(p)">
+      <span *ngIf="p.name === 'PM'"><i class="fa fa-home"></i></span>
+      <span *ngIf="p.name !== 'PM'">{{p.name}}</span>
+    </li>
+  </ol>
+  <div style="position: fixed; top: 126px; width: 49%; overflow: auto; padding: 0" [ngStyle]="{'bottom': (childNodeAssocs.length > 0) ? '330px' : '120px'}">
+    <table class="table table-hover table-sm" style="margin-bottom: 0">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Properties</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let n of childNodes" style="cursor: pointer;" (dblclick)="openChildNode(n)" (click)="setChild(n)" [ngClass]="childNode === n ? 'table-success' : ''">
+        <td style="max-width: 5px">{{ n.id }}</td>
+        <td>{{ n.name }}</td>
+        <td style="max-width: 5px">{{ n.type }}</td>
+        <td style="word-wrap: break-word; max-width: 100px">
+          <div *ngFor="let prop of n.properties">
+            <strong>{{ prop.key }}</strong>={{ prop.value }}
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="childNodeAssocs.length > 0">
+    <h5 style="position: fixed; bottom: 270px; width: 49%; overflow: auto; padding: 10px 0 0 0; border-top: solid lightgray">Associations for <span *ngIf="childNode" class="text-success">{{childNode.name}}</span></h5>
+    <div style="position: fixed; bottom:120px; height: 150px; width: 49%; overflow: auto; padding: 0">
+      <table class="table table-hover table-sm" style="margin-bottom: 0; font-size: small">
+        <thead>
+        <tr>
+          <th>UA Name</th>
+          <th>OA Name</th>
+          <th>Operations</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let assoc of childNodeAssocs"
+            style="cursor: pointer;"
+            (click)="setSelectedAssociation(assoc)"
+            [ngClass]="selectedAssociation !== null && selectedAssociation === assoc ? 'table-success' : ''">
+          <td>{{ assoc.child.name }}</td>
+          <td>{{ assoc.parent.name }}</td>
+          <td>
+            <div *ngFor="let op of assoc.ops">
+              {{ op }}
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="" style="position: fixed; top: 60px; bottom:120px; width: 49%; overflow: auto; padding: 0; left: 50%; margin: 0 5px">
+  <h4>Parent Node: <span *ngIf="parentNode" class="text-primary">{{parentNode.name}}</span></h4>
+  <ol class="breadcrumb" style="border-radius: 0; margin-bottom: 0">
+    <li *ngFor="let p of parentPath" class="breadcrumb-item" style="cursor: pointer;" (click)="setParentPathNode(p)">
+      <span *ngIf="p.name === 'PM'"><i class="fa fa-home"></i></span>
+      <span *ngIf="p.name !== 'PM'">{{p.name}}</span>
+    </li>
+  </ol>
+  <div style="position: fixed; top: 126px; width: 49%; overflow: auto; padding: 0;" [ngStyle]="{'bottom': (parentNodeAssocs.length > 0) ? '330px' : '120px'}">
+    <table class="table table-hover table-sm" style="margin-bottom: 0">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Properties</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let n of parentNodes" style="cursor: pointer;" (dblclick)="openParentNode(n)" (click)="setParent(n)" [ngClass]="parentNode !== null && parentNode === n ? 'table-info' : ''">
+        <td style="max-width: 5px">{{ n.id }}</td>
+        <td>{{ n.name }}</td>
+        <td style="max-width: 5px">{{ n.type }}</td>
+        <td style="word-wrap: break-word; max-width: 100px">
+          <div *ngFor="let prop of n.properties">
+            <strong>{{ prop.key }}</strong>={{ prop.value }}
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div *ngIf="parentNodeAssocs.length > 0">
+    <h5 style="position: fixed; bottom: 270px; width: 49%; overflow: auto; padding: 10px 0 0 0; border-top: solid lightgray">Associations for <span *ngIf="parentNode" class="text-primary" >{{parentNode.name}}</span></h5>
+    <div style="position: fixed; bottom:120px; height: 150px; width: 49%; overflow: auto; padding: 0">
+      <table class="table table-hover table-sm" style="margin-bottom: 0; font-size: small">
+        <thead>
+        <tr>
+          <th>UA Name</th>
+          <th>OA Name</th>
+          <th>Operations</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let assoc of parentNodeAssocs"
+            style="cursor: pointer;"
+            (click)="setSelectedAssociation(assoc)"
+            [ngClass]="selectedAssociation !== null && selectedAssociation === assoc ? 'table-info' : ''">
+          <td>{{ assoc.child.name }}</td>
+          <td>{{ assoc.parent.name }}</td>
+          <td>
+            <div *ngFor="let op of assoc.ops">
+              {{ op }}
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar fixed-bottom navbar-light" style="height: 120px; padding: 0">
+  <div class="row footer" style="border-top: solid lightgray; margin: 0;">
+    <div class="col-sm-4">
+      <h4>Nodes <small *ngIf="lastSelectedNode"> (Selected Node: {{lastSelectedNode.name}})</small></h4>
+      <div class="row" style="margin: 0; padding-top: 5px">
+        <div style="padding-right: 5px;">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createNodeModal" [disabled]="!canCreateNode"><i class="fa fa-plus"></i> Create/Assign Node</button><br>
+        </div>
+        <div style="padding-right: 5px;">
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editNodeModal" [disabled]="!lastSelectedNode || lastSelectedNode.id == 0"><i class="fa fa-pencil"></i> Edit Node</button>
+        </div>
+        <div style="">
+          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteNodeModal" [disabled]="!lastSelectedNode || lastSelectedNode.id == 0"><i class="fa fa-trash"></i> Delete Node</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <h4>Assignments</h4>
+      <div class="row" style="margin: 0; padding-top: 5px">
+        <div style="padding-right: 5px;">
+          <button type="button" class="btn btn-primary" [disabled]="!canAssign" (click)="assign()"><i class="fa fa-plus"></i> Assign</button><br>
+        </div>
+        <div style="">
+          <button type="button" class="btn btn-danger" [disabled]="!canAssign" (click)="deassign()"><i class="fa fa-trash"></i> Deassign</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <h4>Associations</h4>
+      <div class="row" style="margin: 0; padding-top: 5px">
+        <div style="padding-right: 5px;">
+          <button class="btn btn-primary" routerLink="/associations" ><i class="fa fa-list"></i> View All</button>
+        </div>
+        <div style="padding-right: 5px;">
+          <button class="btn btn-primary" data-toggle="modal" data-target="#createAssociationModal" [disabled]="!canAssoc"><i class="fa fa-plus"></i> Create</button>
+        </div>
+        <div style="padding-right: 5px;">
+          <button class="btn btn-success" data-toggle="modal" data-target="#editAssociationModal" [disabled]="!selectedAssociation.child.id"><i class="fa fa-pencil"></i> Edit</button>
+        </div>
+        <div style="">
+          <button class="btn btn-danger" data-toggle="modal" data-target="#deleteAssociationModal" [disabled]="!selectedAssociation.child.id"><i class="fa fa-trash"></i> Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+<!--Modals-->
+<div class="modal" id="createNodeModal" role="dialog">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #222222">
+        <h4 class="modal-title" style="color: white;">Create Node</h4>
+      </div>
+      <div class="modal-body" style="text-align: left;">
+        <div class="form-group">
+          <label for="" class="control-label">Name</label>
+          <input type="text" class="form-control" name="name" placeholder="name" [(ngModel)]="createNodeModel.name">
+        </div>
+        <div class="form-group">
+          <label for="type" class="control-label">Type</label>
+          <select class="form-control"
+                  name="type"
+                  required
+                  [(ngModel)]="createNodeModel.type">
+            <option *ngFor="let type of allowedTypes">{{type}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="properties" class="control-label">Properties</label>
+          <textarea class="form-control" style="overflow: auto; white-space: pre" name="properties" rows="3" [(ngModel)]="createNodeModel.properties"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#createNodeModal" (click)="createNode()" [disabled]="allowedTypes.length <= 0">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="editNodeModal" role="dialog">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #222222">
+        <h4 class="modal-title" style="color: white;">Edit Node</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="" class="control-label">Name</label>
+          <input type="text" class="form-control" name="name" id="" placeholder="name" [(ngModel)]="editNodeModel.name">
+        </div>
+        <div class="form-group">
+          <label for="type" class="control-label">Type</label>
+          <input type="text" class="form-control" name="type" id="type" placeholder="type" [(ngModel)]="editNodeModel.type" disabled>
+        </div>
+        <div class="form-group">
+          <label for="properties" class="control-label">Properties</label>
+          <textarea class="form-control" style="overflow: auto; white-space: pre" id="properties" name="properties" rows="3" [(ngModel)]="editNodeModel.properties"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer" style="">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#editNodeModal" (click)="editNode()">Edit</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="deleteNodeModal" role="dialog">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #222222">
+        <h4 class="modal-title" style="color: white;">Delete Node</h4>
+      </div>
+      <div class="modal-body">
+        <h4 *ngIf="lastSelectedNode" style="font-weight: normal">Are you sure you want to delete <strong>{{lastSelectedNode.name}}</strong>?</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit"
+                class="btn btn-danger"
+                data-toggle="modal"
+                data-target="#deleteNodeModal"
+                (click)="deleteNode()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="createAssociationModal" role="dialog">
+  <div class="modal-dialog modal-full">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #222222">
+        <h5 class="modal-title" style="color: white;">Create Association</h5>
+      </div>
+      <div class="modal-body" style="text-align: left; padding: 5px 15px">
+        <h4>User Attribute: <span *ngIf="childNode" style="font-weight: normal">{{childNode.name}}</span></h4>
+        <h4>Object Attribute: <span *ngIf="parentNode" style="font-weight: normal">{{parentNode.name}}</span></h4>
+        <h4>Operations <small style="font-style: italic">(One operation per line)</small></h4>
+        <textarea class="form-control" id="ops" name="ops" style="font-size: small; overflow: auto; white-space: pre; height: 25vh;" [(ngModel)]="assocModel.operations" #ops="ngModel"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#createAssociationModal" (click)="createAssociation()">Create Association</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="selectedAssociation" class="modal" id="editAssociationModal" role="dialog">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #222222">
+        <h4 class="modal-title" style="color: white;">Update Association</h4>
+      </div>
+      <div class="modal-body" style="text-align: left;">
+        <div class="form-group">
+          <label for="name" class="control-label">UA ID</label>
+          <input type="text" class="form-control" name="name" id="name" [(ngModel)]="selectedAssociation.child.name" disabled>
+        </div>
+        <div class="form-group">
+          <label for="id" class="control-label">Target ID</label>
+          <input type="text" class="form-control" name="id" id="id" [(ngModel)]="selectedAssociation.parent.name" disabled>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Operations</label>
+          <textarea class="form-control" style="overflow: auto; white-space: pre; height: 25vh;" name="newOps" id="newOps" [(ngModel)]="assocModel.operations"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#editAssociationModal" (click)="updateAssociation()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="deleteAssociationModal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="background: #222222">
+        <h4 class="modal-title" style="color: white;">Delete Node</h4>
+      </div>
+      <div class="modal-body">
+        <h4 *ngIf="selectedAssociation" style="font-weight: normal">Are you sure you want to delete the association between <strong>{{selectedAssociation.child.name}}</strong> and <strong>{{selectedAssociation.parent.name}}</strong>?</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit"
+                class="btn btn-danger"
+                data-toggle="modal"
+                data-target="#deleteAssociationModal"
+                (click)="deleteAssociation()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

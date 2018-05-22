@@ -1,0 +1,68 @@
+<h2>Natural Language Policy Machine</h2>
+<div style="padding: 10px;">
+  <h4>Step 1: Select a Subject</h4>
+  <div class="form-group" style="height: 150px; width: 15%; margin-bottom: 10px; overflow: auto">
+    <table class="table table-sm table-hover table-condensed">
+      <thead>
+      <tr>
+        <th>Name</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr *ngFor="let subject of subjects" style="cursor: pointer;" (click)="model.subjectId = subject.id" [class.table-active]="subject.id === model.subjectId">
+        <td>{{ subject.name }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Step 2: List Operations (Separated by comma)</h4>
+  <input type="text" class="form-control" style="width: 50%; margin-bottom: 10px" id="operations" name="operations" [(ngModel)]="model.opsStr">
+
+  <h4>Step 3: Select Target Nodes</h4>
+  <div class="form-group" style="width: 60%; height: 200px; overflow: auto; margin-bottom: 10px">
+    <table id="nodesTable" class="table table-sm table-hover table-condensed" style="margin-bottom: 0">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Properties</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let n of targets" style="cursor: pointer;" [class.table-active]="model.targetIds.indexOf(n.id) > -1" (click)="doTarget(n)">
+        <td style="max-width: 5px">{{ n.id }}</td>
+        <td>{{ n.name }}</td>
+        <td style="max-width: 5px">{{ n.type }}</td>
+        <td>
+          <div *ngFor="let prop of n.properties">
+            <strong>{{ prop.key }}</strong>={{ prop.value }}
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Step 4: Specify a Policy Class</h4>
+  <div class="form-group" style="height: 150px; width: 15%; margin-bottom: 10px; overflow: auto">
+    <table class="table table-sm table-hover table-condensed">
+      <thead>
+      <tr>
+        <th>Name</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr *ngFor="let pc of pcs" style="cursor: pointer;" (click)="model.pcId = pc.id" [class.table-active]="pc.id === model.pcId">
+        <td>{{ pc.name }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Step 5: Submit Changes</h4>
+  <input type="button" class="btn btn-primary" value="Submit" (click)="submit()">
+</div>

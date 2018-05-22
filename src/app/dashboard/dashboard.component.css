@@ -1,0 +1,35 @@
+.breadcrumb {
+  padding: 6px 8px;
+}
+
+.breadcrumb .breadcrumb-item {
+  cursor: pointer;
+  color: #008CBA;
+}
+
+.breadcrumb .breadcrumb-item:hover {
+  cursor: pointer;
+  color: #2f6473;
+  text-decoration: underline #2f6473;
+}
+
+.footer {
+  padding: 10px 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+@media (max-width: 800px) {
+  button {
+    font-size: 0 !important;
+  }
+
+  button i {
+    font-size: 20px !important;
+  }
+}

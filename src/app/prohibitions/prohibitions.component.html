@@ -1,0 +1,264 @@
+<app-nav-bar [prohsActive]="true"></app-nav-bar>
+<div style="height: 90%;margin: 0">
+  <div style="height: 100%; padding: 40px 5%">
+    <h3>
+      Prohibitions
+      <div style="float: right">
+        <button class="btn btn-danger icon-button" data-toggle="modal" data-target="#deleteModal" [disabled]="!selPro"><a class="fa fa-trash"></a></button>
+        <div class="modal" id="deleteModal" role="dialog">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header" style="background: #222222">
+                <h4 class="modal-title" style="color: white;">Delete Node</h4>
+              </div>
+              <div class="modal-body">
+                <h4 *ngIf="selPro">Are you sure you want to delete Prohibition <strong>{{selPro.name}}</strong>?</h4>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" (click)="deletePro()">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-success icon-button" data-toggle="modal" data-target="#editModal" [disabled]="!selPro"><a class="fa fa-pencil"></a></button>
+        <div *ngIf="selPro" class="modal" id="editModal" role="dialog">
+          <div class="modal-dialog modal-full" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="background: #222222">
+                <h4 class="modal-title" style="color: white;">Update Association</h4>
+              </div>
+              <div class="modal-body" style="text-align: left;">
+                <div class="row">
+                  <div class="col-lg-2">
+                    <h6>Info</h6>
+                    <label for="name" class="control-label">Name</label>
+                    <input type="text" style="margin-bottom: 20px" class="form-control" name="name" placeholder="name" [(ngModel)]="model.name" disabled>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="inter" [(ngModel)]="model.intersection"> Intersection
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <h6>Subject</h6>
+                    <div style="overflow: auto; max-height: 65vh; ">
+                      <table class="table table-sm table-hover table-condensed">
+                        <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Name</th>
+                          <th>Type</th>
+                          <th>Properties</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr *ngFor="let node of subs" style="cursor: pointer;" (click)="setSubject(node)" [class.table-active]="selSubject !== null && node.id === selSubject.id">
+                          <td>{{ node.id }}</td>
+                          <td>{{ node.name }}</td>
+                          <td>{{ node.type }}</td>
+                          <td>
+                            <div *ngFor="let prop of node.properties">
+                              <strong>{{ prop.key }}</strong>={{ prop.value }}
+                            </div>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="col-lg-4" style="">
+                    <h6>Resources</h6>
+                    <div style="max-height: 65vh; overflow: auto">
+                      <table class="table table-hover table-sm">
+                        <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Name</th>
+                          <th>Type</th>
+                          <th>Properties</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr *ngFor="let node of resources" style="cursor: pointer"  (click)="addResource(node)" [class.table-active]="inSelectedResources(node)">
+                          <td>{{ node.id }}</td>
+                          <td>{{ node.name }}</td>
+                          <td>{{ node.type }}</td>
+                          <td>
+                            <div *ngFor="let prop of node.properties">
+                              <strong>{{ prop.key }}</strong>={{ prop.value }}
+                            </div>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="col-lg-2">
+                    <div class="" style="margin-bottom: 10px">
+                      <h6>
+                        Selected Resources
+                        <button type="submit" style="float: right" class="btn btn-primary icon-button" (click)="removeRes()"><a class="fa fa-trash"></a></button>
+
+                      </h6>
+                      <select multiple="" class="form-control" style="height: 35vh">
+                        <option *ngFor="let res of model.selectedResources" (click)="setComplement(res)" ><span *ngIf="res.complement">!</span> {{res.node.name}}</option>
+                      </select>
+                    </div>
+                    <div>
+                      <h6>Operations (<small style="font-style: italic">One op per line</small>)</h6>
+                      <textarea class="form-control" name="ops" style="height: 25vh; font-size: small; overflow: auto;" [(ngModel)]="model.ops" #ops="ngModel"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="reset()">Clear</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" (click)="updatePro()">Update</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary icon-button" data-toggle="modal" data-target="#createModal" (click)="resetSelPro()"><a class="fa fa-plus"></a></button>
+        <div class="modal" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-full" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="background: #222222">
+                <h5 class="modal-title" style="color: white;">Create Prohibition</h5>
+              </div>
+              <div class="modal-body" style="display: flex; flex-flow: column; max-height: 100%">
+                <div class="row">
+                  <div class="col-lg-2">
+                    <h6>Info</h6>
+                    <label for="name" class="control-label">Name</label>
+                    <input type="text" style="margin-bottom: 20px" class="form-control" name="name" id="name" placeholder="name" [(ngModel)]="model.name">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="inter" [(ngModel)]="model.intersection"> Intersection
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                    <h6>Subject</h6>
+                    <div style="overflow: auto; max-height: 65vh; ">
+                      <table id='a-uaTable' class="table table-sm table-hover table-condensed">
+                        <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Name</th>
+                          <th>Type</th>
+                          <th>Properties</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr *ngFor="let node of subs" style="cursor: pointer;" (click)="setSubject(node)" [class.table-active]="selSubject != null && node === selSubject">
+                          <td>{{ node.id }}</td>
+                          <td>{{ node.name }}</td>
+                          <td>{{ node.type }}</td>
+                          <td>
+                            <div *ngFor="let prop of node.properties">
+                              <strong>{{ prop.key }}</strong>={{ prop.value }}
+                            </div>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="col-lg-4" style="">
+                    <h6>Resources</h6>
+                    <div style="max-height: 65vh; overflow: auto">
+                      <table id='a-oaParentTable' class="table table-hover table-sm">
+                        <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Name</th>
+                          <th>Type</th>
+                          <th>Properties</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr *ngFor="let node of resources" style="cursor: pointer"  (click)="addResource(node)" [class.table-active]="model.selectedResources.includes(node)">
+                          <td>{{ node.id }}</td>
+                          <td>{{ node.name }}</td>
+                          <td>{{ node.type }}</td>
+                          <td>
+                            <div *ngFor="let prop of node.properties">
+                              <strong>{{ prop.key }}</strong>={{ prop.value }}
+                            </div>
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="col-lg-2">
+                    <div class="" style="margin-bottom: 10px">
+                      <h6>
+                        Selected Resources
+                        <button type="submit" style="float: right" class="btn btn-primary icon-button" (click)="removeRes()"><a class="fa fa-trash"></a></button>
+
+                      </h6>
+                      <select multiple="" class="form-control" style="height: 35vh">
+                        <option *ngFor="let res of model.selectedResources" (click)="setComplement(res)" ><span *ngIf="res.complement">!</span> {{res.node.name}}</option>
+                      </select>
+                    </div>
+                    <div>
+                      <h6>Operations (<small style="font-style: italic">One op per line</small>)</h6>
+                      <textarea class="form-control" id="ops" name="ops" style="height: 25vh; font-size: small; overflow: auto;" [(ngModel)]="model.ops" #ops="ngModel"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="reset()">Clear</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="createPro()">Create</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </h3>
+
+    <div *ngIf="show" style="padding: 10px; overflow-y: auto; height: 100%">
+      <table id='prosTable' class="table table-hover table-sm">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Intersection</th>
+          <th>Operations</th>
+          <th>Resources</th>
+          <th>Subject</th>
+          <th>Subject Type</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr *ngFor="let pro of pros" style="cursor: pointer;" (click)="setPro(pro)" [class.table-active]="pro == selPro">
+          <td>{{ pro.name }}</td>
+          <td>{{ pro.intersection }}</td>
+          <td>
+            <div *ngFor="let op of pro.operations">
+              {{ op }}
+            </div>
+          </td>
+          <td>
+            <div *ngFor="let res of pro.resourceNodes">
+              <span *ngIf="res['complement'] == true">!</span>{{ res['node'].name }}
+            </div>
+          </td>
+          <td *ngIf="pro.subjectNode">{{ pro.subjectNode.name }}</td>
+          <td *ngIf="pro.subjectNode">{{ pro.subjectNode.type }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

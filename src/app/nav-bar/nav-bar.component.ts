@@ -8,14 +8,9 @@ import {AlertService} from '../services/alert.service';
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css']
 })
-export class NavComponent implements OnInit {
+export class NavBarComponent {
+  @Input() dashboardActive: boolean;
+  @Input() assocsActive: boolean;
+  @Input() prohsActive: boolean;
 
-  ngOnInit() {
-
-  }
-
-  public logout() {
-    console.log('logging out...');
-    this.pm.logout();
-  }
 }

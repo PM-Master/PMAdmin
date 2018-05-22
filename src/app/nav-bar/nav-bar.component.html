@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 55px">
+  <a class="navbar-brand" href="#">Policy Machine</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation" style="">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" [ngClass]="dashboardActive ? 'active' : ''">
+        <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      </li>
+      <li class="nav-item" [ngClass]="assocsActive ? 'active' : ''">
+        <a class="nav-link" routerLink="/associations" routerLinkActive="active">Associations</a>
+      </li>
+      <li class="nav-item" [ngClass]="prohsActive ? 'active' : ''">
+        <a class="nav-link" routerLink="/prohibitions" routerLinkActive="active">Prohibitions</a>
+      </li>
+    </ul>
+    <div class="form-inline my-2 my-lg-0">
+      <ul class="my-2 my-lg-0">
+        <li class="nav-link">
+          <a style="color: white" href="../login"><i class="fa fa-sign-out"></i>Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
