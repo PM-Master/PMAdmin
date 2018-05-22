@@ -2,13 +2,118 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>PmAdmin</title>
+  <title>MyApp</title>
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"/>
+  <script type="text/javascript">
+    function setSource(db){
+      if(db === 'db'){
+        if(document.getElementById('db').style.display === 'block'){
+          document.getElementById('db').style.display = 'none';
+        }else {
+          document.getElementById('db').style.display = 'block';
+          document.getElementById('fs').style.display = 'none';
+        }
+      }else{
+        if(document.getElementById('fs').style.display === 'block'){
+          document.getElementById('fs').style.display = 'none';
+        }else {
+          document.getElementById('db').style.display = 'none';
+          document.getElementById('fs').style.display = 'block';
+        }
+      }
+    }
+
+    var activeView = 'assignments';
+    function showView(view){
+      document.getElementById(activeView).style.display = 'none';
+      document.getElementById('li-' + activeView).classList.remove('active');
+
+      document.getElementById(view).style.display = 'inline-block';
+      document.getElementById('li-' + view).classList.add('active');
+
+      activeView = view;
+    }
+
+    function filterNodeNames(inputId, tableId, colIndex) {
+      // Declare variables
+      var input, filter, table, tr, td, i;
+      input = document.getElementById(inputId);
+      filter = input.value.toUpperCase();
+      table = document.getElementById(tableId);
+      tr = table.getElementsByTagName("tr");
+
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[colIndex];
+        if (td) {
+          if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
+    function filterNodeTypes(checkBox, tableId, type, colIndex) {
+      // Declare variables
+      var input, filter, table, tr, td, i;
+      table = document.getElementById(tableId);
+      tr = table.getElementsByTagName("tr");
+
+      //check if check box is checked or unchecked
+      if(checkBox.checked) {
+        //show all nodes of the type
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[colIndex];
+          if (td) {
+            if (td.innerHTML.toUpperCase() === type) {
+              tr[i].style.display = "";
+            }
+          }
+        }
+      } else {
+        // filter nodes of the type
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[colIndex];
+          if (td) {
+            if (td.innerHTML.toUpperCase() === type) {
+              tr[i].style.display = "none";
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html, body {
+      height: 100%;
+    }
+    .icon-button {
+      padding: 0 5px;
+    }
+    .alert {
+      border: none;
+    }
+  </style>
 </head>
-<body>
-  <app-root></app-root>
+<body style="">
+<app-root></app-root>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+<script>
+  $(function () {
+    $('[data-toggle="popover"]').popover()
+  })
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>
 </body>
 </html>

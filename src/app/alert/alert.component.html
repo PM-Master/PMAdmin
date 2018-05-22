@@ -1,0 +1,16 @@
+﻿<div
+  *ngIf="alert"
+  class="{{ cssClass(alert) }} alert-dismissable"
+  style="
+    position: -webkit-sticky;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    width:30em;
+    text-align: center;
+    margin-left: -15em;
+    z-index: 1000;
+    border: none">
+  {{alert.message}}
+  <a class="close" (click)="removeAlert(alert)">&times;</a>
+</div>
