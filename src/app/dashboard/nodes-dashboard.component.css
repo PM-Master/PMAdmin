@@ -1,0 +1,30 @@
+path.link {
+  fill: none;
+  stroke: #555;
+  stroke-width: 1.5px;
+  cursor: pointer;
+}
+
+button {
+  border-radius: 0;
+}
+
+.card{
+  padding: 0;
+}
+
+td, th {
+  word-wrap: break-word;
+  max-width: 100px;
+}
+
+table {
+  font-size: x-small;
+}
+
+.icon-button {
+  padding: 0 5px;
+}
+
+
+

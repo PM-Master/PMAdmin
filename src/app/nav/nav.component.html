@@ -1,0 +1,21 @@
+<nav class="navbar navbar-default" style="margin-bottom: 0; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); transition: 0.3s;position: -webkit-sticky;
+  position: sticky;
+  top: 0; z-index: 100;">
+  <app-alert></app-alert>
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
+      <li><a routerLink="/configuration" routerLinkActive="active">Configuration</a></li>
+      <li><a routerLink="/evr" routerLinkActive="active">Event Response</a></li>
+      <li><a href="" class="">Sandbox</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="../login" (click)="logout()"><i class="fa fa-sign-out"></i>Logout</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Policy Machine</a>
+      </div>
+    </ul>
+  </div>
+</nav>
