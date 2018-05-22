@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
 
     this.pm.login(username, password)
       .then(res => {
-        this.router.navigate(['/nodes']);
+        this.router.navigate(['/dashboard']);
       });
   }
 }
