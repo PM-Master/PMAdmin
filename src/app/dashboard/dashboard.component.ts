@@ -293,7 +293,6 @@ export class DashboardComponent implements OnInit {
     if (this.createNodeModel.type.length === 0) {
       this.createNodeModel.type = this.allowedTypes[0];
     }
-
     this.pmService.createNodeWProps(this.createNodeModel.name, this.createNodeModel.type, props)
       .then((response) => {
         if (this.lastSelectedNode.id !== 0) {
@@ -308,7 +307,25 @@ export class DashboardComponent implements OnInit {
           this.updateParentNodes(this.openedParentNode);
           this.updateChildNodes(this.openedChildNode);
         }
+        this.resetCreateNodeModel();
       });
+  }
+
+  resetCreateNodeModel() {
+    this.createNodeModel = {
+      'name': '',
+      'type': '',
+      'properties': ''
+    };
+  }
+
+  resetEditNodeModel() {
+    this.editNodeModel = {
+      'id': 0,
+      'name': '',
+      'type': '',
+      'properties': ''
+    };
   }
 
   editNode() {
@@ -328,19 +345,10 @@ export class DashboardComponent implements OnInit {
     this.pmService.updateNode(new PmNode(this.editNodeModel.id, this.editNodeModel.name, this.editNodeModel.type, finalProps))
       .then(response => {
         this.alertService.success(`Successfully updated ${this.editNodeModel.name}`);
-        this.resetModel();
+        this.resetEditNodeModel();
         this.updateParentNodes(this.openedParentNode);
         this.updateChildNodes(this.openedChildNode);
       });
-  }
-
-  resetModel() {
-    this.editNodeModel = {
-      'id': 0,
-      'name': '',
-      'type': '',
-      'properties': ''
-    };
   }
 
   setModel(node) {
