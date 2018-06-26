@@ -10,7 +10,8 @@ import {AlertService} from '../services/alert.service';
 })
 export class NavBarComponent {
   @Input() dashboardActive: boolean;
+  @Input() usersActive: boolean;
   @Input() assocsActive: boolean;
   @Input() prohsActive: boolean;
-
+  @Input() analyticsActive: boolean;
 }

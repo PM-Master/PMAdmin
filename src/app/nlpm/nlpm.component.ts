@@ -63,7 +63,14 @@ export class NLPMComponent implements OnInit {
     delete this.model.opsStr;
     this.pmService.nlpm(this.model)
       .then(response => {
-          this.alertService.success('Success!');
+        this.alertService.success('Success!');
+        this.model = {
+          'subjectId': 0,
+          'operations': [],
+          'opsStr': '',
+          'targetIds': [],
+          'pcId': 0
+        };
       });
 
   }

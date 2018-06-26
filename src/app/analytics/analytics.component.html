@@ -1,0 +1,53 @@
+<app-nav-bar [analyticsActive]="true"></app-nav-bar>
+<div class="row" style="margin: 0">
+  <div class="col-lg-6" style="padding: 20px">
+    <h3>Select a Node</h3>
+    <div class="form-group" style="height: 300px; overflow: auto; margin-bottom: 10px">
+      <table class="table table-sm table-hover table-condensed" style="margin-bottom: 0">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Type</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let n of nodes" style="cursor: pointer;" [class.table-active]="selNode === n" (click)="setNode(n)">
+          <td style="max-width: 5px">{{ n.id }}</td>
+          <td>{{ n.name }}</td>
+          <td style="max-width: 5px">{{ n.type }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-lg-6" style="padding: 20px">
+    <div *ngIf="selNode">
+      <h3>Selected Node: {{selNode.name}}</h3>
+      <div class="form-group" style="height: 300px; overflow: auto; margin-bottom: 10px">
+        <table class="table table-sm table-hover table-condensed" style="margin-bottom: 0">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Permissions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let n of access" style="cursor: pointer;">
+            <td style="max-width: 5px">{{ n.target.id }}</td>
+            <td>{{ n.target.name }}</td>
+            <td style="max-width: 5px">{{ n.target.type }}</td>
+            <td>
+              <div *ngFor="let op of n.operations">
+                {{ op }}
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

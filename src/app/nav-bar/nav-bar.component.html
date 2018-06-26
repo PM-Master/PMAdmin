@@ -9,11 +9,17 @@
       <li class="nav-item" [ngClass]="dashboardActive ? 'active' : ''">
         <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
       </li>
+      <li class="nav-item" [ngClass]="usersActive ? 'active' : ''">
+        <a class="nav-link" routerLink="/users" routerLinkActive="active">Users</a>
+      </li>
       <li class="nav-item" [ngClass]="assocsActive ? 'active' : ''">
         <a class="nav-link" routerLink="/associations" routerLinkActive="active">Associations</a>
       </li>
       <li class="nav-item" [ngClass]="prohsActive ? 'active' : ''">
         <a class="nav-link" routerLink="/prohibitions" routerLinkActive="active">Prohibitions</a>
+      </li>
+      <li class="nav-item" [ngClass]="analyticsActive ? 'active' : ''">
+        <a class="nav-link" routerLink="/analytics" routerLinkActive="active">Analytics</a>
       </li>
     </ul>
     <div class="form-inline my-2 my-lg-0">
