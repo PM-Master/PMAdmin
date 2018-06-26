@@ -14,6 +14,8 @@ import { AssociationsComponent } from './associations/associations.component';
 import { ProhibitionsComponent } from './prohibitions/prohibitions.component';
 import { NLPMComponent } from './nlpm/nlpm.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { UsersComponent } from './users/users.component';
+import { AnalyticsComponent } from './analytics/analytics.component';
 
 @NgModule({
   imports: [
@@ -30,7 +32,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AssociationsComponent,
     ProhibitionsComponent,
     NLPMComponent,
-    DashboardComponent
+    DashboardComponent,
+    UsersComponent,
+    AnalyticsComponent
   ],
   providers: [
     PmService,

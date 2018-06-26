@@ -6,14 +6,16 @@ import {ProhibitionsComponent} from './prohibitions/prohibitions.component';
 import {NLPMComponent} from './nlpm/nlpm.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {UsersComponent} from './users/users.component';
+import {AnalyticsComponent} from './analytics/analytics.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'users', component: UsersComponent },
   { path: 'associations', component: AssociationsComponent },
   { path: 'prohibitions', component: ProhibitionsComponent },
+  { path: 'analytics', component: AnalyticsComponent },
   { path: 'nlpm', component: NLPMComponent }
 ];
 

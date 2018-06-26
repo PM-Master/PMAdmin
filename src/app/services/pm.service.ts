@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
-import {Headers, Http, URLSearchParams} from '@angular/http';
+import {Headers, URLSearchParams} from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
 import { PmNode } from '../model/pmnode';
-import {AccessEntry} from '../model/AccessEntry';
-import {Router} from '@angular/router';
 import {AlertService} from './alert.service';
-import {Association} from '../model/Association';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class PmService {
@@ -17,7 +14,7 @@ export class PmService {
   private nodesUrl = 'http://localhost:8080/pm/api/nodes';
   private assignmentsUrl = 'http://localhost:8080/pm/api/assignments';
   private associationsUrl = 'http://localhost:8080/pm/api/associations';
-  private permissionsUrl = 'http://localhost:8080/pm/api/permissions';
+  private analyticsUrl = 'http://localhost:8080/pm/api/analytics';
   private configUrl = 'http://localhost:8080/pm/api/configuration';
   private kernelUrl = 'http://localhost:8080/pm/api/kernel';
   private proUrl = 'http://localhost:8080/pm/api/prohibitions';
@@ -325,6 +322,27 @@ export class PmService {
 
   nlpm(model) {
     return this.post('http://localhost:8080/pm/api/nlpm', model);
+  }
+
+  getAccessibleNodes(username: string) {
+    return this.get(`${this.analyticsUrl}/${username}/targets/permissions`, null)
+      .then(response => response['entity']);
+  }
+
+  getUsersPermissions(node) {
+    const name = node.name;
+    const type = node.type;
+    let properties = '';
+    for (let prop of node.properties) {
+      if (properties.length === 0) {
+        properties += prop['key'] + '=' + prop['value'];
+      } else {
+        properties += ',' + prop['key'] + '=' + prop['value'];
+      }
+    }
+
+    return this.get(`${this.analyticsUrl}/target;name=${name};type=${type};properties=${properties}/users/permissions`, null)
+      .then(response => response['entity']);
   }
 }
 

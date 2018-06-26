@@ -1,0 +1,145 @@
+<app-nav-bar [usersActive]="true"></app-nav-bar>
+<div class="row" style="height: 90%;margin: 0;">
+  <div class="col-lg-6" style="padding: 40px 5%;">
+    <h3>
+      Users
+    </h3>
+
+    <div style="padding: 10px; overflow-y: auto; height: 300px">
+      <table class="table table-sm table-hover table-condensed" style="margin-bottom: 0">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr *ngFor="let user of users" style="cursor: pointer;" (click)="setUser(user)" [class.table-active]="user == selectedUser">
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="row" style="margin: 0; padding: 10px">
+      <button class="btn btn-primary" data-toggle="modal" data-target="#createUserModal"><a class="fa fa-plus"></a> Create User</button>
+      <div class="modal" id="createUserModal" role="dialog">
+        <div class="modal-dialog modal-full">
+          <div class="modal-content">
+            <div class="modal-header" style="background: #222222">
+              <h5 class="modal-title" style="color: white;">Create User</h5>
+            </div>
+            <div class="modal-body" style="text-align: left;">
+              <div class="form-group">
+                <label for="name" class="control-label">Name</label>
+                <input type="text" class="form-control" name="name" id="name" placeholder="name" [(ngModel)]="model.name">
+              </div>
+              <div class="form-group">
+                <label for="password" class="control-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" [(ngModel)]="model.password"/>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#createUserModal" (click)="createUser()">Create User</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-danger" data-toggle="modal" data-target="#deleteUserModal" [disabled]="!selectedUser" style="margin-left: 10px"><a class="fa fa-trash"></a> Delete User</button>
+      <div class="modal" id="deleteUserModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header" style="background: #222222">
+              <h4 class="modal-title" style="color: white;">Delete Node</h4>
+            </div>
+            <div class="modal-body">
+              <h4 *ngIf="selectedUser">Are you sure you want to delete <strong>{{selectedUser.name}}</strong>?</h4>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit"
+                      class="btn btn-danger"
+                      data-toggle="modal"
+                      data-target="#deleteUserModal"
+                      (click)="deleteUser()">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6" style="padding: 40px 5%;">
+    <h3>User Attributes</h3>
+    <div style="padding: 10px; overflow-y: auto; height: 300px">
+      <table class="table table-sm table-hover table-condensed" style="margin-bottom: 0">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>UA Name</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr *ngFor="let ua of uas" style="cursor: pointer;" (click)="setUA(ua)" [class.table-active]="ua == selectedUA">
+          <td>{{ ua.id }}</td>
+          <td>{{ ua.name }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="row" style="margin: 0; padding: 10px">
+      <button class="btn btn-primary" (click)="assign()" [disabled]="!(selectedUser && selectedUA)"><a class="fa fa-plus"></a> Assign</button>
+
+      <button class="btn btn-primary" data-toggle="modal" data-target="#createModal" style="margin-left: 10px"><a class="fa fa-plus"></a> Create UA</button>
+      <div class="modal" id="createModal" role="dialog">
+        <div class="modal-dialog modal-full">
+          <div class="modal-content">
+            <div class="modal-header" style="background: #222222">
+              <h5 class="modal-title" style="color: white;">Create User Attribute</h5>
+            </div>
+            <div class="modal-body" style="text-align: left;">
+              <div class="form-group">
+                <label for="uaname" class="control-label">Name</label>
+                <input type="text" class="form-control" name="uaname" id="uaname" placeholder="name" [(ngModel)]="uaModel.name">
+              </div>
+              <div class="form-group">
+                <h1>Assign to PC</h1>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#createModal" (click)="createUA()">Create User Attribute</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" [disabled]="!selectedUA" style="margin-left: 10px"><a class="fa fa-trash"></a> Delete UA</button>
+      <div class="modal" id="deleteModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header" style="background: #222222">
+              <h4 class="modal-title" style="color: white;">Delete Node</h4>
+            </div>
+            <div class="modal-body">
+              <h4 *ngIf="selectedUA">Are you sure you want to delete <strong>{{selectedUA.name}}</strong>?</h4>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit"
+                      class="btn btn-danger"
+                      data-toggle="modal"
+                      data-target="#deleteModal"
+                      (click)="deleteUA()">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
